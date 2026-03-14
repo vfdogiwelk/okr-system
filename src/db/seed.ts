@@ -12,7 +12,9 @@ const db = drizzle(sqlite, { schema });
 function seed() {
   console.log("🌱 Seeding database...");
 
-  // Clear existing data
+  // Clear existing data (order matters for FK constraints)
+  sqlite.exec("DELETE FROM notifications");
+  sqlite.exec("DELETE FROM comments");
   sqlite.exec("DELETE FROM tasks");
   sqlite.exec("DELETE FROM key_results");
   sqlite.exec("DELETE FROM objectives");
