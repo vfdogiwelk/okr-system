@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { ChevronDown, ChevronRight, Target, Users } from "lucide-react";
 
 function initials(name: string) { return name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2); }
+function fmtNum(n: number): string { if (n >= 1_000_000) return (n/1_000_000).toFixed(1).replace(/\.0$/,"")+"M"; if (n >= 1_000) return (n/1_000).toFixed(1).replace(/\.0$/,"")+"K"; return n.toString(); }
 const roleLabels: Record<string, string> = { ceo: "CEO", director: "Директор", manager: "Менеджер", lead: "Тімлід", member: "Спеціаліст" };
 const roleColors: Record<string, string> = { ceo: "#6c5ce7", director: "#3b82f6", manager: "#10b981", lead: "#f59e0b", member: "#6b7280" };
 const statusDots: Record<string, string> = { on_track: "bg-emerald-500", at_risk: "bg-amber-500", behind: "bg-red-500", done: "bg-blue-500" };
@@ -17,40 +18,40 @@ function ObjCard({ obj, depth, expanded, onToggle, cardRef }: { obj: any; depth:
   return (
     <div ref={cardRef} className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
       style={{ borderLeftWidth: "4px", borderLeftColor: color }}>
-      <div className="p-6 cursor-pointer" onClick={onToggle}>
-        <div className="flex items-start gap-5">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md shrink-0"
+      <div className="p-4 sm:p-6 cursor-pointer" onClick={onToggle}>
+        <div className="flex items-start gap-3 sm:gap-5">
+          <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-md shrink-0"
             style={{ backgroundColor: roleColors[obj.owner?.role] || "#6b7280" }}>
             {obj.owner ? initials(obj.owner.name) : "?"}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 mb-2 flex-wrap">
-              <span className="text-lg font-bold text-gray-900">{obj.owner?.name}</span>
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white"
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              <span className="text-base sm:text-lg font-bold text-gray-900">{obj.owner?.name}</span>
+              <span className="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full text-white"
                 style={{ backgroundColor: roleColors[obj.owner?.role] || "#6b7280" }}>
                 {roleLabels[obj.owner?.role] || ""}
               </span>
               {obj.team && (
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                <span className="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full"
                   style={{ backgroundColor: obj.team.color + "15", color: obj.team.color }}>
                   {obj.team.name}
                 </span>
               )}
             </div>
-            <h3 className="text-lg text-gray-600 font-medium leading-snug mb-3">{obj.title}</h3>
+            <h3 className="text-base sm:text-lg text-gray-600 font-medium leading-snug mb-2 sm:mb-3">{obj.title}</h3>
             <div className="flex items-center gap-4">
               <Progress value={pct} className="flex-1 h-3 rounded-full" aria-valuetext={`${pct}%`} />
               <span className={`text-lg font-bold ${pct >= 70 ? "text-emerald-500" : pct >= 40 ? "text-amber-500" : "text-red-500"}`}>{pct}%</span>
             </div>
             {expanded && obj.keyResults?.length > 0 && (
-              <div className="mt-4 bg-gray-50 rounded-xl p-4 space-y-2.5">
-                <div className="text-xs text-gray-400 uppercase tracking-wider font-bold">Ключові результати</div>
+              <div className="mt-3 sm:mt-4 bg-gray-50 rounded-xl p-3 sm:p-4 space-y-2">
+                <div className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-bold">Ключові результати</div>
                 {obj.keyResults.map((kr: any) => (
-                  <div key={kr.id} className="flex items-center gap-3 text-base">
-                    <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${statusDots[kr.status] || "bg-gray-300"}`} />
-                    <span className="flex-1 text-gray-600 truncate">{kr.title}</span>
-                    <span className="text-gray-400 font-mono text-sm">{kr.currentValue}/{kr.targetValue} {kr.unit}</span>
-                    <span className={`font-bold text-sm ${kr.score >= 0.7 ? "text-emerald-500" : kr.score >= 0.4 ? "text-amber-500" : "text-red-500"}`}>
+                  <div key={kr.id} className="flex items-center gap-2 text-sm sm:text-base">
+                    <div className={`w-2 h-2 rounded-full shrink-0 ${statusDots[kr.status] || "bg-gray-300"}`} />
+                    <span className="flex-1 text-gray-600 truncate min-w-0">{kr.title}</span>
+                    <span className="text-gray-400 font-mono text-xs sm:text-sm shrink-0 whitespace-nowrap">{fmtNum(kr.currentValue)}/{fmtNum(kr.targetValue)} {kr.unit}</span>
+                    <span className={`font-bold text-xs sm:text-sm shrink-0 ${kr.score >= 0.7 ? "text-emerald-500" : kr.score >= 0.4 ? "text-amber-500" : "text-red-500"}`}>
                       {Math.round(kr.score * 100)}%
                     </span>
                   </div>

@@ -392,8 +392,8 @@ export function OKRCard({
                 />
               )}
 
-              {/* Status pills */}
-              <div className="flex items-center gap-1">
+              {/* Status pills — scrollable on mobile */}
+              <div className="flex items-center gap-1 shrink-0">
                 {(["active", "completed", "cancelled"] as const).map((s) => {
                   const cfg = objectiveStatusConfig[s];
                   const isActive = objective.status === s;
@@ -402,7 +402,7 @@ export function OKRCard({
                       key={s}
                       onClick={() => handleStatusChange(s)}
                       disabled={isPending}
-                      className={`text-xs font-bold px-2.5 py-1 rounded-full transition-all ${
+                      className={`text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-1 rounded-full transition-all whitespace-nowrap ${
                         isActive
                           ? "ring-2 ring-offset-1"
                           : "opacity-40 hover:opacity-70"
@@ -412,7 +412,6 @@ export function OKRCard({
                         color: cfg.color,
                         ...(isActive ? { ringColor: cfg.color } : {}),
                       }}
-                      title={`Статус: ${cfg.label}`}
                     >
                       {cfg.label}
                     </button>
