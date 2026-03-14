@@ -270,7 +270,7 @@ export function TaskItem({
 
   return (
     <div style={{ marginLeft: indent * (typeof window !== "undefined" && window.innerWidth < 640 ? 16 : 32) }}>
-      <div className="flex flex-wrap items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors group">
+      <div className="flex flex-wrap items-start sm:items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors group">
         {/* Subtask toggle */}
         <div className="w-5 shrink-0">
           {hasSubs && (
@@ -316,7 +316,7 @@ export function TaskItem({
         ) : (
           <span
             onClick={() => setEditField("title")}
-            className={`text-base font-medium flex-1 min-w-0 truncate editable-hover cursor-text group/title ${
+            className={`text-base font-medium flex-1 min-w-0 break-words editable-hover cursor-text group/title ${
               task.status === "done" ? "line-through text-gray-300" : "text-gray-700"
             }`}
           >

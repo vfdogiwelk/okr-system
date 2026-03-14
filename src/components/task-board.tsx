@@ -33,7 +33,7 @@ export function TaskBoard({ myTasks, delegatedTasks, currentUserId, allUsers = [
                 <TaskItem task={task} allUsers={allUsers} />
                 {task.objective && (
                   <div className="ml-16 mb-2 flex items-center gap-2 text-sm text-gray-300">
-                    <ArrowUpRight className="w-4 h-4" /><span className="truncate">{task.objective.title}</span>
+                    <ArrowUpRight className="w-4 h-4 shrink-0" /><span className="break-words">{task.objective.title}</span>
                   </div>
                 )}
               </div>

@@ -49,7 +49,7 @@ function ObjCard({ obj, depth, expanded, onToggle, cardRef }: { obj: any; depth:
                 {obj.keyResults.map((kr: any) => (
                   <div key={kr.id} className="flex items-center gap-2 text-sm sm:text-base">
                     <div className={`w-2 h-2 rounded-full shrink-0 ${statusDots[kr.status] || "bg-gray-300"}`} />
-                    <span className="flex-1 text-gray-600 truncate min-w-0">{kr.title}</span>
+                    <span className="flex-1 text-gray-600 min-w-0 break-words">{kr.title}</span>
                     <span className="text-gray-400 font-mono text-xs sm:text-sm shrink-0 whitespace-nowrap">{fmtNum(kr.currentValue)}/{fmtNum(kr.targetValue)} {kr.unit}</span>
                     <span className={`font-bold text-xs sm:text-sm shrink-0 ${kr.score >= 0.7 ? "text-emerald-500" : kr.score >= 0.4 ? "text-amber-500" : "text-red-500"}`}>
                       {Math.round(kr.score * 100)}%

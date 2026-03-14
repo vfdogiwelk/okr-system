@@ -593,7 +593,7 @@ export function OKRCard({
                   <ArrowUpRight className="w-4 h-4" /> Від:{" "}
                   <span className="text-gray-600 font-medium">{objective.parentObjective.owner?.name}</span>
                   <span className="text-gray-300">—</span>
-                  <span className="text-gray-400 truncate max-w-[200px]">{objective.parentObjective.title}</span>
+                  <span className="text-gray-400 break-words">{objective.parentObjective.title}</span>
                   <button onClick={() => { startTransition(async () => { await updateObjectiveParent(objective.id, null); router.refresh(); toast.success("Відв'язано від каскаду"); }); }}
                     className="text-gray-300 hover:text-red-500 transition-colors ml-1" title="Відв'язати від батьківської цілі">
                     <Unlink className="w-3.5 h-3.5" />
