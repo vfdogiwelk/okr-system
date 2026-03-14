@@ -62,7 +62,7 @@ const priorityLabels: Record<string, string> = {
 };
 const priorityList = ["low", "medium", "high", "critical"] as const;
 
-// Updated status cycling: todo → in_progress → done → todo, blocked → todo
+// Updated status cycling: todo -> in_progress -> done -> todo, blocked -> todo
 const nextStatus: Record<string, string> = {
   todo: "in_progress",
   in_progress: "done",
@@ -160,7 +160,7 @@ function AssigneeDropdown({
         <button
           key={u.id}
           onClick={() => onSelect(u.id)}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm text-left transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm text-left transition-colors min-h-[44px]"
         >
           <span
             className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
@@ -269,192 +269,198 @@ export function TaskItem({
   }
 
   return (
-    <div style={{ marginLeft: indent * (typeof window !== "undefined" && window.innerWidth < 640 ? 16 : 32) }}>
-      <div className="flex flex-wrap items-start sm:items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors group">
-        {/* Subtask toggle */}
-        <div className="w-5 shrink-0">
-          {hasSubs && (
-            <button
-              onClick={() => setShowSubs(!showSubs)}
-              className="text-gray-300 hover:text-gray-500"
+    <div style={{ marginLeft: indent * 16 }}>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 px-3 sm:px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors group">
+        {/* Row 1: toggle + status + title */}
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          {/* Subtask toggle — 44px touch target */}
+          <div className="w-11 h-11 flex items-center justify-center shrink-0">
+            {hasSubs ? (
+              <button
+                onClick={() => setShowSubs(!showSubs)}
+                className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-gray-500 rounded-lg"
+              >
+                {showSubs ? (
+                  <ChevronDown className="w-5 h-5" />
+                ) : (
+                  <ChevronRight className="w-5 h-5" />
+                )}
+              </button>
+            ) : null}
+          </div>
+
+          {/* Status — 44px touch target wrapping the icon */}
+          <button
+            onClick={cycleStatus}
+            disabled={isPending}
+            className={`w-11 h-11 flex items-center justify-center shrink-0 rounded-lg ${statusColors[task.status]}`}
+            title={`${statusLabels[task.status]} → клік для зміни`}
+          >
+            <StatusIcon className="w-6 h-6" />
+          </button>
+
+          {/* Title */}
+          {editField === "title" ? (
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onBlur={saveTitle}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") saveTitle();
+                if (e.key === "Escape") {
+                  setTitle(task.title);
+                  setEditField(null);
+                }
+              }}
+              className="flex-1 min-w-0 text-base font-medium bg-white border-2 border-[#6c5ce7] rounded-lg px-3 py-1.5 focus:outline-none"
+              autoFocus
+            />
+          ) : (
+            <span
+              onClick={() => setEditField("title")}
+              className={`text-base font-medium flex-1 min-w-0 editable-hover cursor-text group/title ${
+                task.status === "done" ? "line-through text-gray-300" : "text-gray-700"
+              }`}
             >
-              {showSubs ? (
-                <ChevronDown className="w-4 h-4" />
-              ) : (
-                <ChevronRight className="w-4 h-4" />
-              )}
-            </button>
+              {task.title}
+              <Pencil className="w-3.5 h-3.5 text-transparent group-hover/title:text-[#6c5ce7] inline ml-1.5 shrink-0" />
+            </span>
           )}
         </div>
 
-        {/* Status */}
-        <button
-          onClick={cycleStatus}
-          disabled={isPending}
-          className={`shrink-0 ${statusColors[task.status]}`}
-          title={`${statusLabels[task.status]} → клік для зміни`}
-        >
-          <StatusIcon className="w-6 h-6" />
-        </button>
-
-        {/* Title */}
-        {editField === "title" ? (
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            onBlur={saveTitle}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") saveTitle();
-              if (e.key === "Escape") {
-                setTitle(task.title);
-                setEditField(null);
-              }
-            }}
-            className="flex-1 text-base font-medium bg-white border-2 border-[#6c5ce7] rounded-lg px-3 py-1.5 focus:outline-none"
-            autoFocus
-          />
-        ) : (
-          <span
-            onClick={() => setEditField("title")}
-            className={`text-base font-medium flex-1 min-w-0 editable-hover cursor-text group/title ${
-              task.status === "done" ? "line-through text-gray-300" : "text-gray-700"
-            }`}
-          >
-            {task.title}
-            <Pencil className="w-3.5 h-3.5 text-transparent group-hover/title:text-[#6c5ce7] inline ml-1.5 shrink-0" />
-          </span>
-        )}
-
-        {/* Cross-team */}
-        {task.assignedTeam && (
-          <span
-            className="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 shrink-0 hidden sm:flex"
-            style={{
-              backgroundColor: task.assignedTeam.color + "12",
-              color: task.assignedTeam.color,
-            }}
-          >
-            <Users className="w-3.5 h-3.5" />
-            {task.assignedTeam.name}
-          </span>
-        )}
-
-        {/* Priority */}
-        {editField === "priority" ? (
-          <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-xl p-1.5 shadow-lg z-10 shrink-0">
-            {priorityList.map((p) => (
-              <button
-                key={p}
-                onClick={() => changePriority(p)}
-                className={`text-xs font-bold px-2.5 py-1.5 rounded-lg ${priorityStyles[p]} hover:opacity-80 transition-opacity`}
-              >
-                {priorityLabels[p]}
-              </button>
-            ))}
-            <button
-              onClick={() => setEditField(null)}
-              className="text-gray-300 hover:text-gray-500 ml-1"
+        {/* Row 2 on mobile: meta controls */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap ml-[88px] sm:ml-0">
+          {/* Cross-team */}
+          {task.assignedTeam && (
+            <span
+              className="text-xs font-bold px-3 py-2 rounded-full flex items-center gap-1.5 shrink-0 hidden sm:flex"
+              style={{
+                backgroundColor: task.assignedTeam.color + "12",
+                color: task.assignedTeam.color,
+              }}
             >
-              <X className="w-4 h-4" />
+              <Users className="w-3.5 h-3.5" />
+              {task.assignedTeam.name}
+            </span>
+          )}
+
+          {/* Priority */}
+          {editField === "priority" ? (
+            <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-xl p-1.5 shadow-lg z-10 shrink-0 flex-wrap">
+              {priorityList.map((p) => (
+                <button
+                  key={p}
+                  onClick={() => changePriority(p)}
+                  className={`text-xs font-bold px-3 py-2 rounded-lg min-h-[44px] ${priorityStyles[p]} hover:opacity-80 transition-opacity`}
+                >
+                  {priorityLabels[p]}
+                </button>
+              ))}
+              <button
+                onClick={() => setEditField(null)}
+                className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-gray-500 ml-1 rounded-lg"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setEditField("priority")}
+              className={`text-xs font-bold px-3 py-2 rounded-full shrink-0 min-h-[44px] flex items-center ${
+                priorityStyles[task.priority]
+              } hover:opacity-80 cursor-pointer`}
+              title="Клік для зміни пріоритету"
+            >
+              {priorityLabels[task.priority]}
             </button>
-          </div>
-        ) : (
+          )}
+
+          {/* Due date */}
+          {editField === "dueDate" ? (
+            <input
+              type="date"
+              defaultValue={task.dueDate || ""}
+              onChange={(e) => changeDueDate(e.target.value)}
+              onBlur={() => setEditField(null)}
+              className="text-sm bg-white border-2 border-[#6c5ce7] rounded-lg px-2.5 py-1.5 focus:outline-none shrink-0 h-11"
+              autoFocus
+            />
+          ) : (
+            <button
+              onClick={() => setEditField("dueDate")}
+              className="text-sm text-gray-400 hover:text-gray-600 font-mono shrink-0 editable-hover cursor-text h-11 min-w-[44px] flex items-center justify-center"
+              title="Клік для зміни дедлайну"
+            >
+              {task.dueDate || "\u2014"}
+            </button>
+          )}
+
+          {/* Assignee */}
+          {task.assignee ? (
+            <button
+              ref={assigneeBtnRef}
+              onClick={() => setEditField(editField === "assignee" ? null : "assignee")}
+              className="w-11 h-11 rounded-full flex items-center justify-center text-xs font-bold text-white hover:ring-2 hover:ring-[#6c5ce7]/30 cursor-pointer transition-all shrink-0"
+              style={{ backgroundColor: "#6c5ce7" }}
+              title={`${task.assignee.name} \u2014 клік для зміни`}
+            >
+              {initials(task.assignee.name)}
+            </button>
+          ) : (
+            <button
+              ref={assigneeBtnRef}
+              onClick={() => setEditField(editField === "assignee" ? null : "assignee")}
+              className="w-11 h-11 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center text-gray-300 hover:border-[#6c5ce7] hover:text-[#6c5ce7] shrink-0 transition-all"
+              title="Призначити виконавця"
+            >
+              ?
+            </button>
+          )}
+
+          {/* Assignee dropdown — portal to body */}
+          {editField === "assignee" && allUsers.length > 0 && (
+            <AssigneeDropdown
+              anchorRef={assigneeBtnRef}
+              allUsers={allUsers}
+              onSelect={changeAssignee}
+              onClose={closeAssignee}
+            />
+          )}
+
+          {/* Subtask count */}
+          {hasSubs && (
+            <span className="text-xs text-gray-300 flex items-center gap-1 shrink-0 h-11">
+              <GitBranch className="w-3.5 h-3.5" />
+              {task.subtasks.length}
+            </span>
+          )}
+
+          {/* Block/unblock button — 44px touch target */}
           <button
-            onClick={() => setEditField("priority")}
-            className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${
-              priorityStyles[task.priority]
-            } hover:opacity-80 cursor-pointer`}
-            title="Клік для зміни пріоритету"
+            onClick={() => {
+              const next = task.status === "blocked" ? "todo" : "blocked";
+              startTransition(async () => { await updateTaskStatus(task.id, next); toast.success(`«${task.title}» → ${statusLabels[next]}`); });
+            }}
+            disabled={isPending}
+            className={`w-11 h-11 flex items-center justify-center rounded-lg transition-all shrink-0 ${
+              task.status === "blocked"
+                ? "text-red-400 hover:text-emerald-500 opacity-100"
+                : "text-gray-200 hover:text-red-500 opacity-0 group-hover:opacity-100"
+            }`}
+            title={task.status === "blocked" ? "Розблокувати" : "Заблокувати"}
           >
-            {priorityLabels[task.priority]}
+            <Ban className="w-4 h-4" />
           </button>
-        )}
 
-        {/* Due date */}
-        {editField === "dueDate" ? (
-          <input
-            type="date"
-            defaultValue={task.dueDate || ""}
-            onChange={(e) => changeDueDate(e.target.value)}
-            onBlur={() => setEditField(null)}
-            className="text-sm bg-white border-2 border-[#6c5ce7] rounded-lg px-2.5 py-1.5 focus:outline-none shrink-0"
-            autoFocus
-          />
-        ) : (
+          {/* Delete — 44px touch target */}
           <button
-            onClick={() => setEditField("dueDate")}
-            className="text-sm text-gray-400 hover:text-gray-600 font-mono shrink-0 editable-hover cursor-text hidden sm:block"
-            title="Клік для зміни дедлайну"
+            onClick={handleDelete}
+            className="w-11 h-11 flex items-center justify-center rounded-lg text-gray-200 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all shrink-0"
+            title="Видалити"
           >
-            {task.dueDate || "\u2014"}
+            <Trash2 className="w-4 h-4" />
           </button>
-        )}
-
-        {/* Assignee */}
-        {task.assignee ? (
-          <button
-            ref={assigneeBtnRef}
-            onClick={() => setEditField(editField === "assignee" ? null : "assignee")}
-            className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white hover:ring-2 hover:ring-[#6c5ce7]/30 cursor-pointer transition-all shrink-0"
-            style={{ backgroundColor: "#6c5ce7" }}
-            title={`${task.assignee.name} \u2014 клік для зміни`}
-          >
-            {initials(task.assignee.name)}
-          </button>
-        ) : (
-          <button
-            ref={assigneeBtnRef}
-            onClick={() => setEditField(editField === "assignee" ? null : "assignee")}
-            className="w-9 h-9 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center text-gray-300 hover:border-[#6c5ce7] hover:text-[#6c5ce7] shrink-0 transition-all"
-            title="Призначити виконавця"
-          >
-            ?
-          </button>
-        )}
-
-        {/* Assignee dropdown — portal to body */}
-        {editField === "assignee" && allUsers.length > 0 && (
-          <AssigneeDropdown
-            anchorRef={assigneeBtnRef}
-            allUsers={allUsers}
-            onSelect={changeAssignee}
-            onClose={closeAssignee}
-          />
-        )}
-
-        {/* Subtask count */}
-        {hasSubs && (
-          <span className="text-xs text-gray-300 flex items-center gap-1 shrink-0">
-            <GitBranch className="w-3.5 h-3.5" />
-            {task.subtasks.length}
-          </span>
-        )}
-
-        {/* Block/unblock button */}
-        <button
-          onClick={() => {
-            const next = task.status === "blocked" ? "todo" : "blocked";
-            startTransition(async () => { await updateTaskStatus(task.id, next); toast.success(`«${task.title}» → ${statusLabels[next]}`); });
-          }}
-          disabled={isPending}
-          className={`transition-all shrink-0 ${
-            task.status === "blocked"
-              ? "text-red-400 hover:text-emerald-500 opacity-100"
-              : "text-gray-200 hover:text-red-500 opacity-0 group-hover:opacity-100"
-          }`}
-          title={task.status === "blocked" ? "Розблокувати" : "Заблокувати"}
-        >
-          <Ban className="w-4 h-4" />
-        </button>
-
-        {/* Delete */}
-        <button
-          onClick={handleDelete}
-          className="text-gray-200 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all shrink-0"
-          title="Видалити"
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
+        </div>
       </div>
 
       {showSubs &&

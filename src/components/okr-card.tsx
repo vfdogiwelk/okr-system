@@ -83,14 +83,23 @@ function initials(name: string) {
     .slice(0, 2);
 }
 
-// ── Status config ──
+// -- Status config --
 const objectiveStatusConfig: Record<string, { label: string; color: string; bg: string }> = {
   active: { label: "Активна", color: "#6c5ce7", bg: "#6c5ce715" },
   completed: { label: "Завершена", color: "#10b981", bg: "#10b98115" },
   cancelled: { label: "Скасована", color: "#ef4444", bg: "#ef444415" },
 };
 
-// ── Dropdown for owner/team selection (portal-based) ──
+/** Map objective status to a progress bar color */
+function objectiveProgressColor(status: string): string {
+  switch (status) {
+    case "completed": return "#10b981";
+    case "cancelled": return "#ef4444";
+    default: return "#6c5ce7";
+  }
+}
+
+// -- Dropdown for owner/team selection (portal-based) --
 function PickerDropdown({
   anchorRef,
   items,
@@ -167,7 +176,7 @@ function PickerDropdown({
         <button
           key={item.id}
           onClick={() => onSelect(item.id)}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm text-left transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm text-left transition-colors min-h-[44px]"
         >
           <span
             className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
@@ -186,7 +195,7 @@ function PickerDropdown({
   );
 }
 
-// ── Editable/deletable comment ──
+// -- Editable/deletable comment --
 function CommentItem({ comment }: { comment: any }) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(comment.text);
@@ -217,15 +226,15 @@ function CommentItem({ comment }: { comment: any }) {
           <span className="text-sm font-semibold text-gray-700">{comment.author?.name || "Невідомий"}</span>
           <span className="text-xs text-gray-300">{timeAgo(comment.createdAt) || "щойно"}</span>
           <div className="ml-auto flex items-center gap-1 opacity-0 group-hover/comment:opacity-100 transition-opacity">
-            <button onClick={() => setEditing(true)} className="text-gray-300 hover:text-[#6c5ce7] p-1" title="Редагувати"><Pencil className="w-3.5 h-3.5" /></button>
-            <button onClick={remove} disabled={isPending} className="text-gray-300 hover:text-red-500 p-1" title="Видалити"><Trash2 className="w-3.5 h-3.5" /></button>
+            <button onClick={() => setEditing(true)} className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-[#6c5ce7] rounded-lg" title="Редагувати"><Pencil className="w-3.5 h-3.5" /></button>
+            <button onClick={remove} disabled={isPending} className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-red-500 rounded-lg" title="Видалити"><Trash2 className="w-3.5 h-3.5" /></button>
           </div>
         </div>
         {editing ? (
           <div className="flex gap-2">
-            <input value={text} onChange={(e) => setText(e.target.value)} className="flex-1 text-sm bg-white border-2 border-[#6c5ce7] rounded-lg px-3 py-1.5 focus:outline-none" autoFocus
+            <input value={text} onChange={(e) => setText(e.target.value)} className="flex-1 text-sm bg-white border-2 border-[#6c5ce7] rounded-lg px-3 py-1.5 focus:outline-none h-11" autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") save(); if (e.key === "Escape") { setText(comment.text); setEditing(false); } }} />
-            <button onClick={save} disabled={isPending} className="text-sm font-semibold text-[#6c5ce7] hover:underline">Зберегти</button>
+            <button onClick={save} disabled={isPending} className="text-sm font-semibold text-[#6c5ce7] hover:underline h-11 min-w-[44px] flex items-center justify-center">Зберегти</button>
           </div>
         ) : (
           <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">{comment.text}</p>
@@ -267,6 +276,7 @@ export function OKRCard({
   const pct = Math.round(objective.progress * 100);
   const edited = timeAgo(objective.updatedAt);
   const statusCfg = objectiveStatusConfig[objective.status] || objectiveStatusConfig.active;
+  const progColor = objectiveProgressColor(objective.status);
 
   async function handleTitleSave(val: string) {
     await updateObjectiveTitle(objective.id, val);
@@ -342,24 +352,24 @@ export function OKRCard({
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
       {/* Header */}
-      <div className="p-5 lg:p-8">
+      <div className="p-4 sm:p-5 lg:p-8">
         <div className="flex items-start gap-3 sm:gap-5">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="mt-1 sm:mt-2 text-gray-300 hover:text-gray-500 transition-colors shrink-0"
+            className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-gray-500 transition-colors shrink-0 rounded-lg"
           >
             {expanded ? <ChevronDown className="w-5 sm:w-6 h-5 sm:h-6" /> : <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6" />}
           </button>
 
           <div className="flex-1 min-w-0">
-            {/* Tags row */}
-            <div className="flex items-center gap-3 mb-3 flex-wrap">
+            {/* Tags row — wraps properly on mobile */}
+            <div className="flex items-center gap-2 sm:gap-3 mb-3 flex-wrap">
               {/* Team badge — clickable to change */}
               {objective.team ? (
                 <button
                   ref={teamBtnRef}
                   onClick={() => setShowTeamPicker(!showTeamPicker)}
-                  className="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide hover:opacity-80 transition-opacity cursor-pointer"
+                  className="text-xs font-bold px-3 py-2 rounded-full uppercase tracking-wide hover:opacity-80 transition-opacity cursor-pointer min-h-[44px] flex items-center"
                   style={{ backgroundColor: objective.team.color + "15", color: objective.team.color }}
                   title="Клік для зміни команди"
                 >
@@ -369,7 +379,7 @@ export function OKRCard({
                 <button
                   ref={teamBtnRef}
                   onClick={() => setShowTeamPicker(!showTeamPicker)}
-                  className="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors cursor-pointer"
+                  className="text-xs font-bold px-3 py-2 rounded-full uppercase tracking-wide bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors cursor-pointer min-h-[44px] flex items-center"
                   title="Призначити команду"
                 >
                   <Users className="w-3.5 h-3.5 inline mr-1" />
@@ -392,8 +402,8 @@ export function OKRCard({
                 />
               )}
 
-              {/* Status pills — scrollable on mobile */}
-              <div className="flex items-center gap-1 shrink-0">
+              {/* Status pills */}
+              <div className="flex items-center gap-1 flex-wrap">
                 {(["active", "completed", "cancelled"] as const).map((s) => {
                   const cfg = objectiveStatusConfig[s];
                   const isActive = objective.status === s;
@@ -402,7 +412,7 @@ export function OKRCard({
                       key={s}
                       onClick={() => handleStatusChange(s)}
                       disabled={isPending}
-                      className={`text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-1 rounded-full transition-all whitespace-nowrap ${
+                      className={`text-[11px] sm:text-xs font-bold px-3 py-2 rounded-full transition-all whitespace-nowrap min-h-[44px] flex items-center ${
                         isActive
                           ? "ring-2 ring-offset-1"
                           : "opacity-40 hover:opacity-70"
@@ -422,7 +432,7 @@ export function OKRCard({
               <span className="text-sm text-gray-300 font-medium">{objective.quarter}</span>
 
               {edited && (
-                <span className="text-sm text-gray-300 flex items-center gap-1.5 ml-auto">
+                <span className="text-sm text-gray-300 flex items-center gap-1.5">
                   <Clock className="w-4 h-4" /> {edited}
                 </span>
               )}
@@ -431,7 +441,7 @@ export function OKRCard({
               <Dialog open={cascadeOpen} onOpenChange={setCascadeOpen}>
                 <DialogTrigger
                   render={
-                    <button className="text-gray-300 hover:text-[#6c5ce7] transition-colors ml-1" title="Каскадувати ціль" />
+                    <button className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-[#6c5ce7] transition-colors rounded-lg" title="Каскадувати ціль" />
                   }
                 >
                   <Network className="w-4 h-4" />
@@ -529,7 +539,7 @@ export function OKRCard({
 
               <button
                 onClick={handleDelete}
-                className="text-gray-200 hover:text-red-500 transition-colors ml-1"
+                className="w-11 h-11 flex items-center justify-center rounded-lg text-gray-200 hover:text-red-500 transition-colors"
                 title="Видалити ціль"
               >
                 <Trash2 className="w-4 h-4" />
@@ -543,6 +553,25 @@ export function OKRCard({
               className="text-xl sm:text-2xl font-bold text-gray-900 leading-snug"
               tag="h2"
             />
+
+            {/* Progress % UNDER the title on mobile, beside it on desktop */}
+            <div className="mt-3 sm:hidden">
+              <div className="flex items-center gap-3 mb-1">
+                <span
+                  className="text-3xl font-bold leading-none"
+                  style={{ color: progColor }}
+                >
+                  {pct}<span className="text-lg text-gray-300">%</span>
+                </span>
+              </div>
+              <Progress
+                value={pct}
+                className="h-2.5 rounded-full w-full [&_[data-slot=progress-indicator]]:transition-all"
+                aria-valuetext={`${pct}%`}
+              >
+                <style>{`[data-slot="progress-indicator"] { background-color: ${progColor} !important; }`}</style>
+              </Progress>
+            </div>
 
             {/* Editable description */}
             <div className="mt-2">
@@ -561,7 +590,7 @@ export function OKRCard({
               <button
                 ref={ownerBtnRef}
                 onClick={() => setShowOwnerPicker(!showOwnerPicker)}
-                className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors cursor-pointer group/owner"
+                className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors cursor-pointer group/owner min-h-[44px]"
                 title="Клік для зміни власника"
               >
                 <UserIcon className="w-4 h-4" />
@@ -589,13 +618,13 @@ export function OKRCard({
 
               {/* Parent cascade — editable */}
               {objective.parentObjective ? (
-                <div className="flex items-center gap-2 text-sm text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-gray-400 min-h-[44px] flex-wrap">
                   <ArrowUpRight className="w-4 h-4" /> Від:{" "}
                   <span className="text-gray-600 font-medium">{objective.parentObjective.owner?.name}</span>
                   <span className="text-gray-300">—</span>
                   <span className="text-gray-400 break-words">{objective.parentObjective.title}</span>
                   <button onClick={() => { startTransition(async () => { await updateObjectiveParent(objective.id, null); router.refresh(); toast.success("Відв'язано від каскаду"); }); }}
-                    className="text-gray-300 hover:text-red-500 transition-colors ml-1" title="Відв'язати від батьківської цілі">
+                    className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-red-500 transition-colors rounded-lg" title="Відв'язати від батьківської цілі">
                     <Unlink className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -605,7 +634,7 @@ export function OKRCard({
                     const allObjs = await getAllObjectives();
                     setParentObjectives(allObjs.filter((o: any) => o.id !== objective.id));
                     setShowParentPicker(true);
-                  }} className="flex items-center gap-1.5 text-sm text-gray-300 hover:text-[#6c5ce7] transition-colors font-medium">
+                  }} className="flex items-center gap-1.5 text-sm text-gray-300 hover:text-[#6c5ce7] transition-colors font-medium min-h-[44px]">
                     <Link className="w-4 h-4" /> Прив'язати до батьківської цілі
                   </button>
                   {showParentPicker && parentObjectives.length > 0 && (
@@ -620,14 +649,14 @@ export function OKRCard({
                 </div>
               )}
               {objective.childObjectives?.length > 0 && (
-                <div className="flex items-center gap-2 text-sm text-gray-400 flex-wrap">
+                <div className="flex items-center gap-2 text-sm text-gray-400 flex-wrap min-h-[44px]">
                   <GitBranch className="w-4 h-4 shrink-0" /> Каскад:
                   {objective.childObjectives.map((c: any) => (
-                    <span key={c.id} className="inline-flex items-center gap-1 bg-gray-100 rounded-full px-2.5 py-0.5 text-gray-600 font-medium group/cascade">
+                    <span key={c.id} className="inline-flex items-center gap-1 bg-gray-100 rounded-full px-3 py-2 text-gray-600 font-medium group/cascade min-h-[44px]">
                       {c.owner?.name}
                       <button
                         onClick={() => { startTransition(async () => { await updateObjectiveParent(c.id, null); router.refresh(); toast.success(`${c.owner?.name} відв'язано від каскаду`); }); }}
-                        className="text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover/cascade:opacity-100"
+                        className="w-8 h-8 flex items-center justify-center text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover/cascade:opacity-100 rounded"
                         title={`Відв'язати ${c.owner?.name}`}
                       >
                         <Unlink className="w-3 h-3" />
@@ -639,17 +668,22 @@ export function OKRCard({
             </div>
           </div>
 
-          {/* Progress */}
-          <div className="text-right shrink-0 w-16 sm:w-24">
+          {/* Progress — desktop only (hidden on mobile, shown under title there) */}
+          <div className="text-right shrink-0 w-24 hidden sm:block">
             <div
-              className={`text-2xl sm:text-4xl font-bold leading-none ${
-                pct >= 70 ? "text-emerald-500" : pct >= 40 ? "text-amber-500" : "text-red-500"
-              }`}
+              className="text-4xl font-bold leading-none"
+              style={{ color: progColor }}
             >
               {pct}
               <span className="text-lg text-gray-300">%</span>
             </div>
-            <Progress value={pct} className="h-2.5 mt-3 rounded-full" aria-valuetext={`${pct}%`} />
+            <Progress
+              value={pct}
+              className="h-2.5 mt-3 rounded-full [&_[data-slot=progress-indicator]]:transition-all"
+              aria-valuetext={`${pct}%`}
+            >
+              <style>{`[data-slot="progress-indicator"] { background-color: ${progColor} !important; }`}</style>
+            </Progress>
           </div>
         </div>
       </div>
@@ -658,7 +692,7 @@ export function OKRCard({
       {expanded && (
         <>
           {/* Key Results */}
-          <div className="px-5 lg:px-8 py-6 border-t border-gray-100 bg-gray-50/50">
+          <div className="px-4 sm:px-5 lg:px-8 py-5 sm:py-6 border-t border-gray-100 bg-gray-50/50">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-sm text-gray-400 uppercase tracking-widest font-bold">
                 Ключові результати ({objective.keyResults.length})
@@ -679,11 +713,11 @@ export function OKRCard({
           </div>
 
           {/* Tasks */}
-          <div className="px-5 lg:px-8 py-5 border-t border-gray-100">
+          <div className="px-4 sm:px-5 lg:px-8 py-5 border-t border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={() => setShowTasks(!showTasks)}
-                className="flex items-center gap-2 text-sm text-gray-400 uppercase tracking-widest font-bold hover:text-gray-600 transition-colors"
+                className="flex items-center gap-2 text-sm text-gray-400 uppercase tracking-widest font-bold hover:text-gray-600 transition-colors min-h-[44px]"
               >
                 <ListTodo className="w-5 h-5" /> Задачі ({allTasks.length})
                 {showTasks ? (
@@ -710,7 +744,7 @@ export function OKRCard({
           </div>
 
           {/* Comments */}
-          <div className="px-5 lg:px-8 py-5 border-t border-gray-100">
+          <div className="px-4 sm:px-5 lg:px-8 py-5 border-t border-gray-100">
             <div className="flex items-center gap-2 mb-4">
               <MessageSquare className="w-5 h-5 text-gray-400" />
               <h3 className="text-sm text-gray-400 uppercase tracking-widest font-bold">
@@ -727,8 +761,8 @@ export function OKRCard({
               </div>
             )}
 
-            {/* Add comment */}
-            <div className="flex items-center gap-3">
+            {/* Add comment — full width */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <input
                 type="text"
                 value={commentText}
@@ -740,13 +774,13 @@ export function OKRCard({
                   }
                 }}
                 placeholder="Написати коментар..."
-                className="flex-1 h-10 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm outline-none transition-all hover:border-gray-300 focus:border-[#6c5ce7] focus:ring-3 focus:ring-[#6c5ce7]/20"
+                className="flex-1 h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm outline-none transition-all hover:border-gray-300 focus:border-[#6c5ce7] focus:ring-3 focus:ring-[#6c5ce7]/20"
               />
               <Button
                 onClick={handleAddComment}
                 disabled={commentPending || !commentText.trim()}
                 size="sm"
-                className="bg-[#6c5ce7] hover:bg-[#5a4bd6] text-white rounded-xl h-10 px-4"
+                className="bg-[#6c5ce7] hover:bg-[#5a4bd6] text-white rounded-xl h-11 px-4 min-w-[44px]"
               >
                 <Send className="w-4 h-4 mr-1.5" />
                 {commentPending ? "..." : "Додати"}

@@ -22,17 +22,17 @@ export function TaskBoard({ myTasks, delegatedTasks, currentUserId, allUsers = [
       if (!t.length) return null;
       return (
         <div key={g.key} className="mb-8">
-          <div className="flex items-center gap-3 mb-4 px-2">
+          <div className="flex items-center gap-3 mb-4 px-2 min-h-[44px]">
             <span className={`w-3 h-3 rounded-full ${g.dot}`} />
             <h3 className="text-base font-bold text-gray-600">{g.label}</h3>
             <span className="text-sm text-gray-400 bg-gray-100 px-2.5 py-0.5 rounded-lg font-mono">{t.length}</span>
           </div>
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-3 space-y-1">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-2 sm:p-3 space-y-1">
             {t.map(task => (
               <div key={task.id}>
                 <TaskItem task={task} allUsers={allUsers} />
                 {task.objective && (
-                  <div className="ml-16 mb-2 flex items-center gap-2 text-sm text-gray-300">
+                  <div className="ml-[88px] sm:ml-16 mb-2 flex items-center gap-2 text-sm text-gray-300">
                     <ArrowUpRight className="w-4 h-4 shrink-0" /><span className="break-words">{task.objective.title}</span>
                   </div>
                 )}
@@ -47,10 +47,10 @@ export function TaskBoard({ myTasks, delegatedTasks, currentUserId, allUsers = [
   return (
     <Tabs defaultValue="mine">
       <TabsList className="mb-8">
-        <TabsTrigger value="mine">
+        <TabsTrigger value="mine" className="min-h-[44px] px-4">
           <ListTodo className="w-5 h-5" /> Мої задачі <span className="text-sm text-gray-400 ml-1">{myTasks.length}</span>
         </TabsTrigger>
-        <TabsTrigger value="delegated">
+        <TabsTrigger value="delegated" className="min-h-[44px] px-4">
           <Send className="w-5 h-5" /> Делеговані <span className="text-sm text-gray-400 ml-1">{delegatedTasks.length}</span>
         </TabsTrigger>
       </TabsList>
