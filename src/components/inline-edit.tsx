@@ -33,7 +33,7 @@ export function InlineEdit({ value, onSave, className = "", placeholder = "На�
   return (
     <Tag onClick={() => setEditing(true)} className={`${className} ${!value ? "text-gray-300 italic" : ""} editable-hover inline-block group cursor-text`}>
       {value || placeholder}
-      <Pencil className="w-3.5 h-3.5 text-transparent group-hover:text-[#6c5ce7] inline ml-2 transition-colors" />
+      <Pencil className="w-3.5 h-3.5 text-gray-300 sm:text-transparent sm:group-hover:text-[#6c5ce7] inline ml-2 transition-colors" />
     </Tag>
   );
 }

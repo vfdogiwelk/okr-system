@@ -93,7 +93,7 @@ export function KRRow({ kr }: { kr: any }) {
           <div className="flex items-center gap-3 mb-3 flex-wrap">
             {editField === "title" ? editableInput("title", title, setTitle, "text", "flex-1") : (
               <span onClick={() => setEditField("title")} className="text-base sm:text-lg font-semibold text-gray-800 editable-hover group/t cursor-text">
-                {kr.title}<Pencil className="w-3.5 h-3.5 text-transparent group-hover/t:text-[#6c5ce7] inline ml-2" />
+                {kr.title}<Pencil className="w-3.5 h-3.5 text-gray-300 sm:text-transparent sm:group-hover/t:text-[#6c5ce7] inline ml-2" />
               </span>
             )}
             <button
@@ -102,7 +102,7 @@ export function KRRow({ kr }: { kr: any }) {
               {config.label}
             </button>
             {edited && <span className="text-sm text-gray-300 flex items-center gap-1 h-11"><Clock className="w-3.5 h-3.5" />{edited}</span>}
-            <button onClick={handleDelete} className="w-11 h-11 flex items-center justify-center rounded-lg text-gray-200 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100" title="Видалити KR"><Trash2 className="w-4 h-4" /></button>
+            <button onClick={handleDelete} className="w-11 h-11 flex items-center justify-center rounded-lg text-gray-200 hover:text-red-500 transition-colors sm:opacity-0 sm:group-hover:opacity-100" title="Видалити KR"><Trash2 className="w-4 h-4" /></button>
           </div>
 
           {/* Row 2: Progress bar full width */}
@@ -123,20 +123,20 @@ export function KRRow({ kr }: { kr: any }) {
               {/* Current value */}
               {editField === "value" ? editableInput("value", val, setVal, "number", "w-24") : (
                 <span onClick={() => setEditField("value")} className="editable-hover cursor-text font-bold text-gray-700 group/v min-h-[44px] flex items-center">
-                  {fmtNum(kr.currentValue)}<Pencil className="w-3 h-3 text-transparent group-hover/v:text-[#6c5ce7] inline ml-1" />
+                  {fmtNum(kr.currentValue)}<Pencil className="w-3 h-3 text-gray-300 sm:text-transparent sm:group-hover/v:text-[#6c5ce7] inline ml-1" />
                 </span>
               )}
               <span className="text-gray-300 mx-1">/</span>
               {/* Target value */}
               {editField === "target" ? editableInput("target", target, setTarget, "number", "w-24") : (
                 <span onClick={() => setEditField("target")} className="editable-hover cursor-text text-gray-400 group/tg min-h-[44px] flex items-center">
-                  {fmtNum(kr.targetValue)}<Pencil className="w-3 h-3 text-transparent group-hover/tg:text-[#6c5ce7] inline ml-1" />
+                  {fmtNum(kr.targetValue)}<Pencil className="w-3 h-3 text-gray-300 sm:text-transparent sm:group-hover/tg:text-[#6c5ce7] inline ml-1" />
                 </span>
               )}
               {/* Unit — EDITABLE! */}
               {editField === "unit" ? editableInput("unit", unit, setUnit, "text", "w-28") : (
                 <span onClick={() => setEditField("unit")} className="editable-hover cursor-text text-gray-400 ml-1 group/u min-h-[44px] flex items-center">
-                  {kr.unit}<Pencil className="w-3 h-3 text-transparent group-hover/u:text-[#6c5ce7] inline ml-1" />
+                  {kr.unit}<Pencil className="w-3 h-3 text-gray-300 sm:text-transparent sm:group-hover/u:text-[#6c5ce7] inline ml-1" />
                 </span>
               )}
             </div>

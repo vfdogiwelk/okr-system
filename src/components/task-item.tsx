@@ -323,7 +323,7 @@ export function TaskItem({
               }`}
             >
               {task.title}
-              <Pencil className="w-3.5 h-3.5 text-transparent group-hover/title:text-[#6c5ce7] inline ml-1.5 shrink-0" />
+              <Pencil className="w-3.5 h-3.5 text-gray-300 sm:text-transparent sm:group-hover/title:text-[#6c5ce7] inline ml-1.5 shrink-0" />
             </span>
           )}
         </div>
@@ -333,7 +333,7 @@ export function TaskItem({
           {/* Cross-team */}
           {task.assignedTeam && (
             <span
-              className="text-xs font-bold px-3 py-2 rounded-full flex items-center gap-1.5 shrink-0 hidden sm:flex"
+              className="text-xs font-bold px-3 py-2 rounded-full flex items-center gap-1.5 shrink-0"
               style={{
                 backgroundColor: task.assignedTeam.color + "12",
                 color: task.assignedTeam.color,
@@ -445,7 +445,7 @@ export function TaskItem({
             className={`w-11 h-11 flex items-center justify-center rounded-lg transition-all shrink-0 ${
               task.status === "blocked"
                 ? "text-red-400 hover:text-emerald-500 opacity-100"
-                : "text-gray-200 hover:text-red-500 opacity-0 group-hover:opacity-100"
+                : "text-gray-200 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100"
             }`}
             title={task.status === "blocked" ? "Розблокувати" : "Заблокувати"}
           >
@@ -455,7 +455,7 @@ export function TaskItem({
           {/* Delete — 44px touch target */}
           <button
             onClick={handleDelete}
-            className="w-11 h-11 flex items-center justify-center rounded-lg text-gray-200 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all shrink-0"
+            className="w-11 h-11 flex items-center justify-center rounded-lg text-gray-200 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100 transition-all shrink-0"
             title="Видалити"
           >
             <Trash2 className="w-4 h-4" />

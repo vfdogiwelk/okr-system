@@ -225,7 +225,7 @@ function CommentItem({ comment }: { comment: any }) {
         <div className="flex items-center gap-2 mb-0.5">
           <span className="text-sm font-semibold text-gray-700">{comment.author?.name || "Невідомий"}</span>
           <span className="text-xs text-gray-300">{timeAgo(comment.createdAt) || "щойно"}</span>
-          <div className="ml-auto flex items-center gap-1 opacity-0 group-hover/comment:opacity-100 transition-opacity">
+          <div className="ml-auto flex items-center gap-1 sm:opacity-0 sm:group-hover/comment:opacity-100 transition-opacity">
             <button onClick={() => setEditing(true)} className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-[#6c5ce7] rounded-lg" title="Редагувати"><Pencil className="w-3.5 h-3.5" /></button>
             <button onClick={remove} disabled={isPending} className="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-red-500 rounded-lg" title="Видалити"><Trash2 className="w-3.5 h-3.5" /></button>
           </div>
@@ -656,7 +656,7 @@ export function OKRCard({
                       {c.owner?.name}
                       <button
                         onClick={() => { startTransition(async () => { await updateObjectiveParent(c.id, null); router.refresh(); toast.success(`${c.owner?.name} відв'язано від каскаду`); }); }}
-                        className="w-8 h-8 flex items-center justify-center text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover/cascade:opacity-100 rounded"
+                        className="w-8 h-8 flex items-center justify-center text-gray-300 hover:text-red-500 transition-colors sm:opacity-0 sm:group-hover/cascade:opacity-100 rounded"
                         title={`Відв'язати ${c.owner?.name}`}
                       >
                         <Unlink className="w-3 h-3" />

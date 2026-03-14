@@ -113,7 +113,17 @@
   padding: 2px 6px;
   margin: -2px -6px;
   cursor: text;
+  border-bottom: 1.5px dashed #d1d5db;
 }
 .editable-hover:hover {
   background: #ede9fe;
+  border-bottom-color: #6c5ce7;
+}
+@media (min-width: 640px) {
+  .editable-hover {
+    border-bottom: none;
+  }
+  .editable-hover:hover {
+    border-bottom: 1.5px dashed #6c5ce7;
+  }
 }
