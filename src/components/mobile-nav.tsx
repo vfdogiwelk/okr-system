@@ -28,7 +28,7 @@ export function MobileNav({ userName, userRole, unreadCount = 0 }: { userName: s
             <div className="text-xs text-gray-400">{userName} &middot; {userRole}</div>
           </div>
         </div>
-        <button onClick={() => setOpen(!open)} className="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-gray-100 transition-colors">
+        <button onClick={() => setOpen(!open)} className="w-11 h-11 rounded-xl flex items-center justify-center hover:bg-gray-100 transition-colors">
           {open ? <X className="w-6 h-6 text-gray-600" /> : <Menu className="w-6 h-6 text-gray-600" />}
         </button>
       </div>

@@ -446,7 +446,7 @@ export function OKRCard({
                 >
                   <Network className="w-4 h-4" />
                 </DialogTrigger>
-                <DialogContent className="bg-white border-gray-200 max-w-lg sm:max-w-lg">
+                <DialogContent className="bg-white border-gray-200 sm:max-w-lg">
                   <DialogHeader>
                     <DialogTitle className="text-xl font-bold text-gray-900">
                       Каскадувати ціль

@@ -66,8 +66,8 @@ function ProfileSection({ user }: { user: UserType }) {
       </h2>
       <div className="space-y-5">
         {/* Name */}
-        <div className="flex items-center gap-4">
-          <label className="w-24 text-sm font-medium text-gray-500 shrink-0">Ім&apos;я</label>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <label className="text-sm font-medium text-gray-500 sm:w-24 sm:shrink-0">Ім&apos;я</label>
           {editingField === "name" ? (
             <div className="flex items-center gap-2 flex-1">
               <Input value={name} onChange={(e) => setName(e.target.value)} className="h-10 flex-1" autoFocus />
@@ -89,8 +89,8 @@ function ProfileSection({ user }: { user: UserType }) {
         </div>
 
         {/* Email */}
-        <div className="flex items-center gap-4">
-          <label className="w-24 text-sm font-medium text-gray-500 shrink-0">Email</label>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <label className="text-sm font-medium text-gray-500 sm:w-24 sm:shrink-0">Email</label>
           {editingField === "email" ? (
             <div className="flex items-center gap-2 flex-1">
               <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="h-10 flex-1" autoFocus />
@@ -112,16 +112,16 @@ function ProfileSection({ user }: { user: UserType }) {
         </div>
 
         {/* Role (read-only) */}
-        <div className="flex items-center gap-4">
-          <label className="w-24 text-sm font-medium text-gray-500 shrink-0">Роль</label>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <label className="text-sm font-medium text-gray-500 sm:w-24 sm:shrink-0">Роль</label>
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full text-white" style={{ backgroundColor: roleColors[user.role] }}>
             {roleLabels[user.role]}
           </span>
         </div>
 
         {/* Team (read-only) */}
-        <div className="flex items-center gap-4">
-          <label className="w-24 text-sm font-medium text-gray-500 shrink-0">Команда</label>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <label className="text-sm font-medium text-gray-500 sm:w-24 sm:shrink-0">Команда</label>
           {user.team ? (
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: user.team.color }} />

@@ -30,7 +30,7 @@ export function CreateKRDialog({ objectiveId }: { objectiveId: string }) {
             <label className="text-sm text-gray-500 font-medium mb-1.5 block">Назва KR <span className="text-red-500">*</span></label>
             <Input name="title" required placeholder="Наприклад: Залучити 500 клієнтів" className="h-12 text-base border-gray-200 bg-gray-50" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-gray-500 font-medium mb-1.5 block">Цільове значення</label>
               <Input name="targetValue" type="number" required defaultValue={100} className="h-12 text-base border-gray-200 bg-gray-50" />

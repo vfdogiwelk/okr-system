@@ -27,7 +27,7 @@ export function CreateObjectiveDialog() {
       <DialogTrigger render={<Button className="bg-[#6c5ce7] hover:bg-[#5a4bd6] text-white h-11 px-5 text-base font-semibold rounded-xl" />}>
         <Plus className="w-5 h-5 mr-2" />Нова ціль
       </DialogTrigger>
-      <DialogContent className="bg-white border-gray-200 max-w-lg sm:max-w-lg">
+      <DialogContent className="bg-white border-gray-200 sm:max-w-lg">
         <DialogHeader><DialogTitle className="text-xl font-bold text-gray-900">Нова ціль (Objective)</DialogTitle></DialogHeader>
         <form action={handleSubmit} className="space-y-5 mt-2">
           <div>
@@ -38,7 +38,7 @@ export function CreateObjectiveDialog() {
             <label className="text-sm text-gray-500 font-medium mb-1.5 block">Опис</label>
             <Textarea name="description" placeholder="Чому ця ціль важлива?" className="min-h-[100px] text-base border-gray-200 bg-gray-50" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-gray-500 font-medium mb-1.5 block">Команда</label>
               <Select name="teamId">

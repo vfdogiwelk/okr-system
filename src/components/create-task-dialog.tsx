@@ -28,7 +28,7 @@ export function CreateTaskDialog({ objectiveId, keyResults, directReports, allUs
       <DialogTrigger render={<Button variant="outline" size="sm" className="border-gray-200 text-gray-500 hover:text-gray-800 hover:border-gray-300 rounded-xl" />}>
         <Plus className="w-4 h-4 mr-1.5" />{parentTaskId ? "Підзадача" : "Нова задача"}
       </DialogTrigger>
-      <DialogContent className="bg-white border-gray-200 max-w-lg sm:max-w-lg">
+      <DialogContent className="bg-white border-gray-200 sm:max-w-lg">
         <DialogHeader><DialogTitle className="text-xl font-bold text-gray-900">{parentTaskId ? "Нова підзадача" : "Нова задача"}</DialogTitle></DialogHeader>
         <form action={handleSubmit} className="space-y-5 mt-2">
           <input type="hidden" name="objectiveId" value={objectiveId} />
@@ -59,7 +59,7 @@ export function CreateTaskDialog({ objectiveId, keyResults, directReports, allUs
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-gray-500 font-medium mb-1.5 block">Пріоритет</label>
               <Select name="priority" defaultValue="medium">
@@ -77,7 +77,7 @@ export function CreateTaskDialog({ objectiveId, keyResults, directReports, allUs
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-gray-500 font-medium mb-1.5 block">Виконавець</label>
               <Select name="assigneeId">
