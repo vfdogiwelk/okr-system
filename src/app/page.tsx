@@ -35,7 +35,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
         <div>
           <p className="text-sm text-gray-400 font-medium mb-1">{quarter} &middot; {roleLabels[currentUser.role]} &middot; {currentUser.team?.name}</p>
-          <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Мої цілі та результати</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 tracking-tight">Мої цілі та результати</h1>
           {directReports.length > 0 && (
             <p className="text-base text-gray-400 mt-2 flex items-center gap-2">
               <Users className="w-5 h-5" /> {directReports.length} підлеглих: {directReports.map(r => r.name.split(" ")[0]).join(", ")}

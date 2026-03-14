@@ -92,7 +92,7 @@ function ChildNode({ child, depth, color, isLast }: { child: any; depth: number;
   }, []);
 
   return (
-    <div ref={containerRef} className="relative pl-10">
+    <div ref={containerRef} className="relative pl-6 sm:pl-10">
       {/* Vertical line: top to midpoint */}
       <div className="absolute left-0 top-0 w-0.5" style={{ backgroundColor: color + "30", height: `${midY}px` }} />
       {/* Vertical line: midpoint to bottom (hidden for last) */}
@@ -115,7 +115,7 @@ function TreeNode({ obj, depth = 0, cardRef }: { obj: any; depth?: number; cardR
     <div>
       <ObjCard obj={obj} depth={depth} expanded={expanded} onToggle={() => setExpanded(!expanded)} cardRef={cardRef} />
       {expanded && hasChildren && (
-        <div className="ml-8 mt-2 space-y-3">
+        <div className="ml-4 sm:ml-8 mt-2 space-y-3">
           {obj.childObjectives.map((child: any, i: number) => (
             <ChildNode key={child.id} child={child} depth={depth} color={color} isLast={i === obj.childObjectives.length - 1} />
           ))}

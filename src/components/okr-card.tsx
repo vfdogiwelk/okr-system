@@ -343,12 +343,12 @@ export function OKRCard({
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="p-5 lg:p-8">
-        <div className="flex items-start gap-5">
+        <div className="flex items-start gap-3 sm:gap-5">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="mt-2 text-gray-300 hover:text-gray-500 transition-colors"
+            className="mt-1 sm:mt-2 text-gray-300 hover:text-gray-500 transition-colors shrink-0"
           >
-            {expanded ? <ChevronDown className="w-6 h-6" /> : <ChevronRight className="w-6 h-6" />}
+            {expanded ? <ChevronDown className="w-5 sm:w-6 h-5 sm:h-6" /> : <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6" />}
           </button>
 
           <div className="flex-1 min-w-0">
@@ -541,7 +541,7 @@ export function OKRCard({
             <InlineEdit
               value={objective.title}
               onSave={handleTitleSave}
-              className="text-2xl font-bold text-gray-900 leading-snug"
+              className="text-xl sm:text-2xl font-bold text-gray-900 leading-snug"
               tag="h2"
             />
 
@@ -641,9 +641,9 @@ export function OKRCard({
           </div>
 
           {/* Progress */}
-          <div className="text-right shrink-0 w-24">
+          <div className="text-right shrink-0 w-16 sm:w-24">
             <div
-              className={`text-4xl font-bold leading-none ${
+              className={`text-2xl sm:text-4xl font-bold leading-none ${
                 pct >= 70 ? "text-emerald-500" : pct >= 40 ? "text-amber-500" : "text-red-500"
               }`}
             >

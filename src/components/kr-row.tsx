@@ -73,7 +73,7 @@ export function KRRow({ kr }: { kr: any }) {
   }
 
   return (
-    <div className="px-5 py-4 rounded-xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all group">
+    <div className="px-3 sm:px-5 py-3 sm:py-4 rounded-xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all group">
       <div className="flex items-start gap-4">
         <div className={`w-3 h-3 rounded-full shrink-0 mt-2 ${config.dot}`} />
 

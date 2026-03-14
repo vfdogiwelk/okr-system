@@ -269,8 +269,8 @@ export function TaskItem({
   }
 
   return (
-    <div style={{ marginLeft: indent * 32 }}>
-      <div className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors group">
+    <div style={{ marginLeft: indent * (typeof window !== "undefined" && window.innerWidth < 640 ? 16 : 32) }}>
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors group">
         {/* Subtask toggle */}
         <div className="w-5 shrink-0">
           {hasSubs && (

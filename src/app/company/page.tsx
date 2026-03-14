@@ -17,7 +17,7 @@ export default async function CompanyPage() {
     <div className="p-5 lg:p-10 max-w-5xl mx-auto">
       <div className="mb-10">
         <p className="text-sm text-gray-400 font-medium mb-1">Прозорість &middot; Вся компанія</p>
-        <h1 className="text-4xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
           <Network className="w-9 h-9 text-[#6c5ce7]" />OKR компанії
         </h1>
         <p className="text-base text-gray-400 mt-2 max-w-2xl">

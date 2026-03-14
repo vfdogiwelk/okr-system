@@ -21,6 +21,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "OKR System — Міряй Важливе",
   description: "Система управління цілями та ключовими результатами",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

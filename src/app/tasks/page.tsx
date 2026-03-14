@@ -36,7 +36,7 @@ export default async function TasksPage({ searchParams }: { searchParams: Promis
     <div className="p-5 lg:p-10 max-w-5xl mx-auto">
       <div className="mb-8">
         <p className="text-sm text-gray-400 font-medium mb-1">{roleLabels[currentUser.role]} &middot; {currentUser.team?.name}</p>
-        <h1 className="text-4xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
           <ListTodo className="w-9 h-9 text-blue-500" />Мої задачі
         </h1>
         <div className="flex gap-6 mt-3 text-sm text-gray-400">
