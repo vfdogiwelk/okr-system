@@ -47,13 +47,17 @@ function ObjCard({ obj, depth, expanded, onToggle, cardRef }: { obj: any; depth:
               <div className="mt-3 sm:mt-4 bg-gray-50 rounded-xl p-3 sm:p-4 space-y-2">
                 <div className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-bold">Ключові результати</div>
                 {obj.keyResults.map((kr: any) => (
-                  <div key={kr.id} className="flex items-center gap-2 text-sm sm:text-base">
-                    <div className={`w-2 h-2 rounded-full shrink-0 ${statusDots[kr.status] || "bg-gray-300"}`} />
-                    <span className="flex-1 text-gray-600 min-w-0 break-words">{kr.title}</span>
-                    <span className="text-gray-400 font-mono text-xs sm:text-sm shrink-0 whitespace-nowrap">{fmtNum(kr.currentValue)}/{fmtNum(kr.targetValue)} {kr.unit}</span>
-                    <span className={`font-bold text-xs sm:text-sm shrink-0 ${kr.score >= 0.7 ? "text-emerald-500" : kr.score >= 0.4 ? "text-amber-500" : "text-red-500"}`}>
-                      {Math.round(kr.score * 100)}%
-                    </span>
+                  <div key={kr.id} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm sm:text-base py-1">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className={`w-2 h-2 rounded-full shrink-0 ${statusDots[kr.status] || "bg-gray-300"}`} />
+                      <span className="text-gray-600">{kr.title}</span>
+                    </div>
+                    <div className="flex items-center gap-2 ml-4 sm:ml-auto shrink-0">
+                      <span className="text-gray-400 font-mono text-xs sm:text-sm whitespace-nowrap">{fmtNum(kr.currentValue)}/{fmtNum(kr.targetValue)} {kr.unit}</span>
+                      <span className={`font-bold text-xs sm:text-sm ${kr.score >= 0.7 ? "text-emerald-500" : kr.score >= 0.4 ? "text-amber-500" : "text-red-500"}`}>
+                        {Math.round(kr.score * 100)}%
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>

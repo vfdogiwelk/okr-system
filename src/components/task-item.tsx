@@ -316,7 +316,7 @@ export function TaskItem({
         ) : (
           <span
             onClick={() => setEditField("title")}
-            className={`text-base font-medium flex-1 min-w-0 break-words editable-hover cursor-text group/title ${
+            className={`text-base font-medium flex-1 min-w-0 editable-hover cursor-text group/title ${
               task.status === "done" ? "line-through text-gray-300" : "text-gray-700"
             }`}
           >
